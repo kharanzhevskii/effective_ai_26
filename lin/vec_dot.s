@@ -10,6 +10,8 @@ start:
     VSET VB, {vec_b}, vec_b
     VSET VC, 0x50  ; любой незанятый
     VMUL.U VC, VA, VB
+    VWAIT
+    ; происходит автомат сдвиг на длину вектора
     VSET VC, 0x50
     VSET VA, 0x50
     VADD.U VA, VC

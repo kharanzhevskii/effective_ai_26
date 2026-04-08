@@ -8,34 +8,25 @@ vec: DB 2.0_o3, 1.0_o3, 1.5_o3
 res: DB 0.0_h, 0.0_h
 
 start:
-    MOV A, mat
-    MOV C, [m]            
-    MOV D, res
-    CALL matvec
-    HLT
-
-matvec:
-.row:
-    MOV B, vec            
-    FMOV.H FHD, 0.0       
-
-    CALL dotprod
-    FMOV.H [D], FHD
-    
-    FMOV.H FHA, FHD
-
-    ADD D, 2              
-    DEC C
-    JNZ .row              
-    RET
-
-dotprod:
+    MOV C, [m]
     VSET VL, 3
     VSET VA, {mat}, mat
+    MOV D, res
+
+.row:
     VSET VB, {vec}, vec
-    VSET VC, 0x50  ; любой незанятый
-    VDOT.F VC, VA, VB
-    VSET VC, 0x50  ; любой незанятый
+    VSET VC, 0x60
+    
+    VDOT.O3 VC, VA, VB
     VWAIT
-    FMOV.H FHD, [0x50]
-    RET
+    FMOV.O3 FQA, [0x60]
+    FCVT.H.O3 FHA, FQA
+    FMOV.H [D], FHA
+    
+    ADD D, 2                ; float16 = 2 байта
+    ; VA автоматически сдвинулся на 3 байта вперед
+    
+    DEC C
+    JNZ .row
+    
+    HLT
