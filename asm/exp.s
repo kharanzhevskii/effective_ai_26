@@ -15,7 +15,7 @@ start:
     FMOV.H FHB, 0.0
     FCMP.H FHA, FHB  
     JNC .is_positive        
-    MOV B, 1                
+    MOV B, 1
     FNEG.H FHA
 
 .is_positive:

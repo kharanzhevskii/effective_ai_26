@@ -46,8 +46,6 @@ put_char:                        ; put_char(A:char, D:*to)
         RET
 
 ; Print FA as decimal with 3 fractional digits
-; Вход: FA (float32)
-; Изменяет: FA, FB, FHC, A, C
 print_f32_3:
         MOV A, 1                 ; Truncate mode (RTZ)
         FSCFG A
