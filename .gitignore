@@ -1,2 +1,4 @@
 .vscode
 *.bin
+
+!lin/mnist_weights.bin
